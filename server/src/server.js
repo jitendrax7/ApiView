@@ -156,7 +156,7 @@ async function startServer() {
                 try {
                     await mongodb.disconnect();
                     await postgres.close();
-                    // await rabbitmq.close();
+                    await rabbitmq.close();
 
                     logger.info('All connections closed successfully.');
                     process.exit(0);
