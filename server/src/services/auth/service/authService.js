@@ -1,6 +1,6 @@
 import config from "../../../shared/config/index.js";
 import logger from "../../../shared/config/logger.js";
-import AppError from "../../../shared/utils/appError.js";   
+import AppError from "../../../shared/utils/AppError.js";   
 import jwt from "jsonwebtoken"
 
 export class AuthService {
