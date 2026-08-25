@@ -11,6 +11,8 @@ import ResponceFormatter from './shared/utils/responceFormatter.js'
 import cookieParser from "cookie-parser";
 
 
+import authRouter from "./services/auth/routes/authRouter.js";
+
 
 /**
  * Express server setup with middleware and database connections.
@@ -84,6 +86,9 @@ app.get('/', (req, res) => {
         )
     );
 });
+
+
+app.use("/api/auth", authRouter);
 
 
 app.use((req, res, next) =>{
