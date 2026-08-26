@@ -1,9 +1,9 @@
-import e from "express";
+
 import ResponseFormatter from "../utils/responceFormatter.js";
 
 
 
-const authorize = (allowedRoles=[]) => {
+const authorize = (allowedRoles=[]) => (req, res, next) => {
     try {
         if(!req.user || !req.user.role){
             return res.status(403).json(
