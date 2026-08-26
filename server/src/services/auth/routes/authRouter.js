@@ -17,5 +17,26 @@ router.post("/onboard-super-admin",
     (req, res, next) => authController.onboardSuperAdmin(req, res, next)
 );
 
+router.post("/register",
+    authenticate,
+    authorize([APPLICATION_ROLES.SUPER_ADMIN]),
+    validate(registrationSchema),
+    (req, res, next) => authController.register(req, res, next)
+);
+
+router.post("/login",
+    validate(loginSchema),
+    (req, res, next) => authController.login(req, res, next)
+);
+
+router.get("/profile",
+    authenticate,
+    (req, res, next) => authController.getProfile(req, res, next)
+);
+
+router.get("/logout",
+    authenticate,
+    (req, res, next) => authController.logout(req, res, next)
+);
 
 export default router;
