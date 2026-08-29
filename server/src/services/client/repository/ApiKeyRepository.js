@@ -71,3 +71,6 @@ class MongoApiKeyRepository  extends BaseApiKeyRepository{
     }
     
 }
+
+
+export default new MongoApiKeyRepository();
