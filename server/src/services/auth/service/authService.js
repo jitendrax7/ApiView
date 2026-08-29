@@ -3,6 +3,7 @@ import logger from "../../../shared/config/logger.js";
 import AppError from "../../../shared/utils/AppError.js";   
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs";
+import { APPLICATION_ROLES } from "../../../shared/constants/roles.js";
 
 
 export class AuthService {
@@ -136,6 +137,19 @@ export class AuthService {
         } catch (error) {
             logger.error("Error in getProfile service", error);
             throw error;
+        }
+    }
+
+    async checkSuperAdminPermission(userId) {
+        try {
+            const user = await this.userRepository.findById(userId);
+            if(!user){
+                throw new AppError('User not found', 404);
+            }
+
+            return user.role===APPLICATION_ROLES.SUPER_ADMIN
+        } catch (error) {
+            
         }
     }
 }
