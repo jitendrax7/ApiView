@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 
 
 import authRouter from "./services/auth/routes/authRouter.js";
-
+import clientRouter from "./services/client/routes/clientRoutes.js";
 
 /**
  * Express server setup with middleware and database connections.
@@ -89,6 +89,7 @@ app.get('/', (req, res) => {
 
 
 app.use("/api/auth", authRouter);
+app.use("/api", clientRouter);
 
 
 app.use((req, res, next) =>{
