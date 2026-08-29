@@ -95,7 +95,6 @@ const apiKeySchema = new mongoose.Schema(
                 const days = parseInt(process.env.API_KEY_EXPIRY_DAYS || '365');
                 return new Date(Date.now() + days * 24 * 60 * 60 * 1000);
             },
-            index: true,
         },
         metadata: {
             createdBy: {
