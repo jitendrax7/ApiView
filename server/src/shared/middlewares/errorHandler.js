@@ -3,7 +3,7 @@ import ResponseFormatter  from "../utils/responceFormatter.js";
 
 const errorHandler = (err, req, res, next) => {
 
-    let statusCode = req.statusCode || 500;
+    let statusCode = err.statusCode || 500;
     let message = err.message || "Internal Server Error";
     let errors = err.errors || null;
 
@@ -30,6 +30,7 @@ const errorHandler = (err, req, res, next) => {
         statusCode = 401;
         message = "Token Expired";
     };
+
 
     res.status(statusCode).json(ResponseFormatter.error(message, statusCode, errors));
 }
