@@ -112,9 +112,44 @@ export class EventProducer {
         let attempt =  0;
         while(true){
             try {
-                
+                await this._publish(eventData, {correlationId, attempt});
+                const latencyMs = Date.now() - startMs;
+                this._circuitBreaker.onSuccess();
+                this._incrementMetric('published');
+
+                this._logger.info(`[EventProducer]  published`,{
+                    eventId: eventData.eventId,
+                    correlationId,
+                    attempt: attempt + 1,
+                    latencyMs,
+                    endpoint: eventData.endpoint,
+                });
+                return true;
             } catch (error) {
-                
+                this._logger.error(`[EventProducer] failed to publish`,{
+                    eventId: eventData.eventId,
+                    correlationId,
+                    attempt: attempt + 1,
+                    error: error.message,
+                });
+
+                const canRetry = isRetryable(error) && this._retryStrategy.shouldRetry(attempt);
+                if(!canRetry){
+                    this._circuitBreaker.onFailure();
+                    this._incrementMetric('failed');
+                    if(this._retryStrategy.shouldRetry(attempt)){
+                        this._incrementMetric('retriesExceeded');
+                    }
+                    throw error;
+                }
+
+                await this._retryStrategy.wait(attempt);
+                attempt++;
+                this._logger.info(`[EventProducer] retrying publish`,{
+                    eventId: eventData.eventId,
+                    correlationId,
+                    attempt: attempt + 1,
+                });
             }
         }
     }
