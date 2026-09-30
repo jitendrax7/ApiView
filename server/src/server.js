@@ -13,7 +13,7 @@ import cookieParser from "cookie-parser";
 
 import authRouter from "./services/auth/routes/authRouter.js";
 import clientRouter from "./services/client/routes/clientRoutes.js";
-
+import ingestRouter from "./services/ingest/routes/ingestRoutes.js";
 /**
  * Express server setup with middleware and database connections.
  * It initializes the Express application, sets up middleware for security, CORS, and cookie parsing,
@@ -89,6 +89,7 @@ app.get('/', (req, res) => {
 
 
 app.use("/api/auth", authRouter);
+app.use("/api/hit", ingestRouter);
 app.use("/api", clientRouter);
 
 
