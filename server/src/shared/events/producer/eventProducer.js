@@ -29,7 +29,7 @@ export class EventProducer {
 
     async _publish(eventData, {correlationId, attempt}){
         const channel = await this._channelManager.getChannel();
-        
+        // console.log("HH")
         const message = {
             type:EVENT_TYPES.API_HIT,
             data:eventData,
@@ -134,6 +134,7 @@ export class EventProducer {
                 });
 
                 const canRetry = isRetryable(error) && this._retryStrategy.shouldRetry(attempt);
+                console.log("canRetry",canRetry);
                 if(!canRetry){
                     this._circuitBreaker.onFailure();
                     this._incrementMetric('failed');
@@ -142,7 +143,7 @@ export class EventProducer {
                     }
                     throw error;
                 }
-
+            
                 await this._retryStrategy.wait(attempt);
                 attempt++;
                 this._logger.info(`[EventProducer] retrying publish`,{

@@ -9,7 +9,7 @@ const RETRYABLE_PATTERNS = [
     'buffer full',
     'heartbeat timeout',
     'not available',
-    'server connection closed',
+    'server connection closed'
 ];
 
 

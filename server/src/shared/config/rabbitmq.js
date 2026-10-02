@@ -64,11 +64,10 @@ class RabbitMQConnection {
         } catch (error) {
             this.isConnecting = false;
             logger.error("Error connecting to RabbitMQ: ", error);
-            console.error("Error connecting to RabbitMQ: ", error);
             throw error;
         }  
     }
-
+  
     getChannel() {
         return this.channel;
     }

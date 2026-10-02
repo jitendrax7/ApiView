@@ -62,7 +62,25 @@ export class IngestService {
                 userAgent: hitData.userAgent || '',
             };  
 
-            await this.eventProducer.publishApiHit(event);
+            const published = await this.eventProducer.publishApiHit(event);
+
+            if (!published) {
+                // Circuit breaker rejected the request
+                logger.warn('API hit rejected by circuit breaker', {
+                    eventId: event.eventId,
+                    endpoint: event.endpoint,
+                    method: event.method,
+                    clientId: event.clientId,
+                });
+
+                return {
+                    eventId: event.eventId,
+                    status: 'rejected',
+                    reason: 'service_unavailable',
+                    timestamp: event.timestamp,
+                };
+            }
+            
             logger.info('API hit ingested', {
                 eventId: event.eventId,
                 clientId: event.clientId,

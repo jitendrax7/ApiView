@@ -1,4 +1,6 @@
 import { createEventProducer } from "../../../shared/events/producer/createEventProducer.js";
+import { IngestController } from "../controller/ingestController.js";
+import { IngestService } from "../services/ingestServices.js";
 
 class Container {
     static init(){
